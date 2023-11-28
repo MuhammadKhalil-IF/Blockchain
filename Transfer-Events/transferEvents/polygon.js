@@ -10,7 +10,7 @@ async function fetchAndStoreEvents(fromBlock, latestBlock, chunkSize = 10000) {
   const csvData = [];
 
   try {
-    const idMap = new Map(); // To store the last occurrence of each ID
+    const idMap = new Map();
 
     while (from <= latestBlock) {
       const to = Math.min(from + chunkSize - 1, latestBlock);
@@ -22,7 +22,6 @@ async function fetchAndStoreEvents(fromBlock, latestBlock, chunkSize = 10000) {
       for (const event of events) {
         const tokenId = event.returnValues.tokenId;
 
-        // Update the last occurrence of each ID
         idMap.set(tokenId, {
           token_id: tokenId,
           from_address: event.returnValues.from,
@@ -34,7 +33,6 @@ async function fetchAndStoreEvents(fromBlock, latestBlock, chunkSize = 10000) {
       from += chunkSize;
     }
 
-    // Store the last occurrence of each ID in csvData
     for (const idData of idMap.values()) {
       csvData.push(idData);
     }
